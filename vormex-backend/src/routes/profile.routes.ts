@@ -8,14 +8,14 @@ import {
   getUserActivity,
   getUserActivityYears,
 } from '../controllers/profile.controller';
-import { authenticate } from '../middleware/auth.middleware';
+import { authenticate, optionalAuth } from '../middleware/auth.middleware';
 
 const router = express.Router();
 
 /**
  * Profile Routes
  * 
- * GET /api/users/:userId/profile - Get full user profile (supports UUID or username, public, respects privacy)
+ * GET /api/users/:userId/profile - Get full user profile (supports UUID, username, or "me", public, respects privacy)
  * GET /api/users/:userId/feed - Get user's content feed (supports UUID or username, public)
  * GET /api/users/:userId/activity - Get activity heatmap (supports UUID or username, public)
  * GET /api/users/:userId/activity/years - Get available years (supports UUID or username, public)
@@ -24,8 +24,8 @@ const router = express.Router();
  * POST /api/users/me/avatar - Upload avatar image (protected)
  */
 
-// Public routes (support both UUID and username)
-router.get('/users/:userId/profile', getProfile); // Public but respects privacy settings
+// Public routes (support both UUID and username; optionalAuth for "me" resolution)
+router.get('/users/:userId/profile', optionalAuth, getProfile); // Public but respects privacy settings
 router.get('/users/:userId/feed', getProfileFeed); // Public
 router.get('/users/:userId/activity', getUserActivity); // Public - GitHub-style contribution calendar
 router.get('/users/:userId/activity/years', getUserActivityYears); // Public - Available years for dropdown

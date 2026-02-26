@@ -34,6 +34,17 @@ export const getProfile = async (
       userId = userId.substring(1);
     }
 
+    // Resolve "me" to authenticated user's ID
+    if (userId.toLowerCase() === 'me') {
+      if (!requestingUserId) {
+        res.status(401).json({
+          error: 'Authentication required to view own profile',
+        });
+        return;
+      }
+      userId = requestingUserId;
+    }
+
     const profile = await profileService.getFullProfile(requestingUserId, userId);
 
     res.status(200).json(profile);
