@@ -87,7 +87,8 @@ export const activateItem = async (inventoryId: string) => {
 // Get my XP balance
 export const getXPBalance = async (): Promise<number> => {
   const response = await apiClient.get('/store/balance');
-  return response.data?.balance ?? response.data ?? 0;
+  if (typeof response === 'number') return response;
+  return (response as { balance?: number })?.balance ?? 0;
 };
 
 // Get purchase history
