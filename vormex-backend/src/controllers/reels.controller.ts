@@ -2118,7 +2118,7 @@ export const getCreatorAnalytics = async (req: AuthRequest, res: Response): Prom
 
     const recentViews = await prisma.reel_views.count({
       where: {
-        reel: { authorId: userId },
+        reels: { authorId: userId },
         createdAt: { gte: since },
       },
     });
