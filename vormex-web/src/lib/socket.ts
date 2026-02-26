@@ -129,7 +129,7 @@ export function initializeSocket(handlers?: SocketEventHandlers): Socket {
   // If socket exists but disconnected, reuse it if still connecting to avoid "closed before established" warnings
   if (socket && !socket.connected) {
     // Only clean up if we've been disconnected (not in initial connection phase)
-    const wasConnecting = socket.connecting;
+    const wasConnecting = (socket as Socket & { connecting?: boolean }).connecting;
     if (!wasConnecting) {
       socket.removeAllListeners();
       socket.disconnect();

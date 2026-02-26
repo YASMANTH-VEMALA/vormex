@@ -409,7 +409,7 @@ export function FindPeople() {
               >
                 <div className="p-4 space-y-4">
                   {/* College Filter */}
-                  {(filterOptions?.colleges?.length > 0 || user?.college) && (
+                  {((filterOptions?.colleges?.length ?? 0) > 0 || user?.college) && (
                     <div>
                       <label className="text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2 block">
                         College
