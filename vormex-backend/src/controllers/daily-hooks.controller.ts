@@ -95,7 +95,7 @@ export const getHooks = async (
         id: 'make-connections',
         type: 'engagement',
         title: 'Grow your network – connect with professionals in your field',
-        action: { label: 'Find People', href: '/people' },
+        action: { label: 'Find People', href: '/find-people' },
         emoji: '🤝',
         priority: priority++,
       });

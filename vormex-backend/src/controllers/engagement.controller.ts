@@ -1246,6 +1246,9 @@ export const getStreakLeaderboard = async (req: AuthRequest, res: Response): Pro
     const streakField = type === 'connection' ? 'connectionStreak' :
                         type === 'posting' ? 'postingStreak' :
                         type === 'messaging' ? 'messagingStreak' : 'loginStreak';
+    const longestField = type === 'connection' ? 'longestConnectionStreak' :
+                         type === 'posting' ? 'longestPostingStreak' :
+                         type === 'messaging' ? 'longestMessagingStreak' : 'longestLoginStreak';
 
     const topStreaks = await prisma.engagement_streaks.findMany({
       where: {
@@ -1254,12 +1257,14 @@ export const getStreakLeaderboard = async (req: AuthRequest, res: Response): Pro
       orderBy: { [streakField]: 'desc' },
       take: limitNum,
       include: {
-        user: {
+        users: {
           select: {
             id: true,
             username: true,
             name: true,
             profileImage: true,
+            college: true,
+            bio: true,
           },
         },
       },
@@ -1287,11 +1292,16 @@ export const getStreakLeaderboard = async (req: AuthRequest, res: Response): Pro
         type,
         leaderboard: topStreaks.map((s, i) => ({
           rank: i + 1,
-          userId: s.user.id,
-          username: s.user.username,
-          name: s.user.name,
-          profileImage: s.user.profileImage,
-          streakCount: (s as any)[streakField],
+          user: {
+            id: s.users.id,
+            username: s.users.username,
+            name: s.users.name,
+            profileImage: s.users.profileImage,
+            college: s.users.college ?? null,
+            bio: s.users.bio ?? null,
+          },
+          currentStreak: (s as any)[streakField],
+          longestStreak: (s as any)[longestField] ?? (s as any)[streakField],
         })),
         myRank,
       },

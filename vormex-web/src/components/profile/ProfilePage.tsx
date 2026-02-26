@@ -39,9 +39,10 @@ import type { FullProfileResponse, ActivityHeatmapDay, ActivityYearsResponse, Pr
 
 interface ProfilePageProps {
   userId?: string; // If not provided, shows current user's profile
+  openEditModalOnMount?: boolean; // Open edit profile modal when page loads (e.g. from /profile/edit)
 }
 
-export function ProfilePage({ userId }: ProfilePageProps) {
+export function ProfilePage({ userId, openEditModalOnMount }: ProfilePageProps) {
   const { user: authUser, isAuthenticated } = useAuth();
   const [profile, setProfile] = useState<FullProfileResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -275,7 +276,11 @@ export function ProfilePage({ userId }: ProfilePageProps) {
   };
 
   // Determine if viewing own profile
-  const targetUserId = userId ? userId : (isAuthenticated && authUser?.id ? authUser.id : null);
+  // Resolve "me" to current user's ID (e.g. /profile/me)
+  const resolvedUserId = userId?.toLowerCase() === 'me'
+    ? (isAuthenticated && authUser?.id ? authUser.id : null)
+    : userId;
+  const targetUserId = resolvedUserId ?? (isAuthenticated && authUser?.id ? authUser.id : null);
   const isOwner = isAuthenticated && authUser && authUser.id === targetUserId;
 
   // Fetch profile data
@@ -330,6 +335,15 @@ export function ProfilePage({ userId }: ProfilePageProps) {
         setIsPrivate(true);
         setError(err.response?.data?.error || 'This profile is private.');
       } else if (err.response?.status === 404) {
+        // 404 on own profile = stale token (user deleted from DB, e.g. after reset)
+        if (targetUserId && authUser?.id === targetUserId && typeof window !== 'undefined') {
+          const { removeToken } = await import('@/lib/auth/authHelpers');
+          const Cookies = (await import('js-cookie')).default;
+          removeToken();
+          Cookies.remove('authToken');
+          window.location.href = '/login';
+          return;
+        }
         setError('User not found.');
       } else {
         setError(err.response?.data?.error || err.message || 'Failed to load profile.');
@@ -360,6 +374,13 @@ export function ProfilePage({ userId }: ProfilePageProps) {
       }
     }
   }, [fetchProfile]);
+
+  // Open edit modal when navigating from /profile/edit (e.g. "Add Bio" button)
+  useEffect(() => {
+    if (openEditModalOnMount && !loading && profile && isOwner) {
+      setEditModalOpen(true);
+    }
+  }, [openEditModalOnMount, loading, profile, isOwner]);
 
   const [activityLoading, setActivityLoading] = useState(false);
 

@@ -18,8 +18,9 @@ function resolveApiUrl(): string {
     throw new Error('Missing NEXT_PUBLIC_API_URL (or NEXT_PUBLIC_BACKEND_URL) in production');
   }
 
-  // Local default for development only.
-  return 'http://localhost:5000/api';
+  // Development: use relative /api so requests go through Next.js proxy (avoids CORS, Network Error)
+  // Remove NEXT_PUBLIC_API_URL from .env.local to use this. Proxy forwards to localhost:5000.
+  return '/api';
 }
 
 export const API_URL = resolveApiUrl();
