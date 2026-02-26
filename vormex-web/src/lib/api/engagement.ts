@@ -61,6 +61,7 @@ export interface StreakLeaderboardEntry {
     name: string;
     profileImage: string | null;
     college: string | null;
+    bio: string | null;
   };
   currentStreak: number;
   longestStreak: number;
