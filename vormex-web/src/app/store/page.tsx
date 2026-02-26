@@ -18,10 +18,14 @@ import {
   X,
   Sparkles,
   MessageCircle,
+  Layout,
+  Grid3X3,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import * as storeAPI from '@/lib/api/store';
+import { getFeedTheme, setFeedTheme } from '@/lib/utils/feedTheme';
 
 type StoreItem = storeAPI.StoreItem;
 type StorePurchase = storeAPI.StorePurchase;
@@ -48,6 +52,7 @@ function getCategoryLabel(category: string): string {
 }
 
 function StorePage() {
+  const router = useRouter();
   const [items, setItems] = useState<StoreItem[]>([]);
   const [purchases, setPurchases] = useState<StorePurchase[]>([]);
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
@@ -62,6 +67,7 @@ function StorePage() {
     message: '',
     type: 'success'
   });
+  const [themeKey, setThemeKey] = useState(0);
 
   const loadData = useCallback(async () => {
     try {
@@ -341,6 +347,71 @@ function StorePage() {
       <div className="max-w-2xl mx-auto px-4 py-5">
         {activeTab === 'shop' && (
           <>
+            {/* Homepage Feed Theme - Free */}
+            <div className="mb-6 rounded-xl border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden">
+              <div className="p-4 border-b border-gray-200 dark:border-neutral-800">
+                <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <Palette className="w-4 h-4 text-pink-500" />
+                  Homepage Feed Theme
+                </h3>
+                <p className="text-xs text-gray-500 dark:text-neutral-400 mt-0.5">
+                  Choose a background for your feed · Free
+                </p>
+              </div>
+              <div className="p-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => {
+                      setFeedTheme('default');
+                      setThemeKey((k) => k + 1);
+                    }}
+                    className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-colors ${
+                      getFeedTheme() === 'default'
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                        : 'border-gray-200 dark:border-neutral-700 hover:border-gray-300 dark:hover:border-neutral-600'
+                    }`}
+                  >
+                    <Layout className={`w-8 h-8 ${getFeedTheme() === 'default' ? 'text-blue-500' : 'text-gray-400'}`} />
+                    <span className={`text-sm font-medium ${getFeedTheme() === 'default' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-neutral-400'}`}>
+                      Default
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setFeedTheme('grid');
+                      setThemeKey((k) => k + 1);
+                    }}
+                    className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-colors ${
+                      getFeedTheme() === 'grid'
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                        : 'border-gray-200 dark:border-neutral-700 hover:border-gray-300 dark:hover:border-neutral-600'
+                    }`}
+                  >
+                    <div className="w-8 h-8 grid grid-cols-2 gap-0.5 p-1 rounded">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div
+                          key={i}
+                          className={`w-full h-full rounded-sm ${getFeedTheme() === 'grid' ? 'bg-blue-500' : 'bg-gray-400'}`}
+                        />
+                      ))}
+                    </div>
+                    <span className={`text-sm font-medium ${getFeedTheme() === 'grid' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-neutral-400'}`}>
+                      Square Grid
+                    </span>
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-neutral-400 mt-3 text-center">
+                  Go to Home to see your selected theme
+                </p>
+                <button
+                  onClick={() => router.push('/')}
+                  className="mt-3 w-full py-2 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
+                >
+                  Go to Home
+                </button>
+              </div>
+            </div>
+
             {/* Categories */}
             <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
               {categories.map((category) => (
