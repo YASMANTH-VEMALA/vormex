@@ -1,9 +1,8 @@
-/* CodePen team card - compact, bio beside profile */
+/* CodePen team card design - exact match */
 
 .card {
-  margin: 0.9em 0 0.3em;
-  padding: 0.85em 0.75em;
-  min-height: 5.5em;
+  margin: 3em 0 1em;
+  padding: 0.73em;
   background: linear-gradient(
     83deg,
     #ffdd40 0 97%,
@@ -12,10 +11,11 @@
   position: relative;
   list-style: none;
   display: block;
-  transform: scale(0.95);
+  transform: scale(0.92);
   transition: all 0.4s ease 0s;
   overflow: visible;
   width: 100%;
+  clear: both;
 }
 
 .card:nth-of-type(even) {
@@ -32,14 +32,11 @@
   filter: drop-shadow(0 20px 10px rgba(0, 0, 0, 0.15));
 }
 
-/* Smaller profile thumb */
 .thumb {
-  width: 9vmin;
-  min-width: 40px;
-  height: 9vmin;
-  min-height: 40px;
+  width: 13vmin;
+  height: 13vmin;
   float: left;
-  margin-right: 0.9em;
+  margin-right: 1.25em;
   background: linear-gradient(
     -86deg,
     #2f313a 0 70%,
@@ -49,8 +46,8 @@
   transition: all 0.4s ease 0s;
   border-radius: 0.25em;
   overflow: hidden;
-  margin-left: -2em;
-  padding: 0.35em;
+  margin-left: -3em;
+  padding: 0.5em;
 }
 
 .card:nth-of-type(even) .thumb {
@@ -60,8 +57,8 @@
     #ffdd40 0% 100%
   );
   float: right;
-  margin-left: 0.9em;
-  margin-right: -2em;
+  margin-left: 2em;
+  margin-right: -3em;
   transform: rotate(4deg);
 }
 
@@ -96,24 +93,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2em;
+  font-size: 1.5em;
   font-weight: 600;
   color: #ffdd40;
 }
 
-/* Name - dark box above, smaller */
+/* Name - in dark box ABOVE yellow card (like CodePen h3) */
 .name {
   background: linear-gradient(182deg, rgba(255, 255, 255, 0) 60%, #2f313a 0 100%);
   display: inline;
   transform: rotate(-2deg);
   position: absolute;
   margin: 0;
-  margin-top: -1.9em;
-  left: 7vmin;
-  padding: 0.35em 0.6em;
+  margin-top: -2.25em;
+  left: 9vmin;
+  padding: 0.5em 0.75em;
   color: #ffdd40;
   border-radius: 0.25em;
-  font-size: 1.1em;
+  font-size: 1.35em;
   font-weight: 700;
   transform-origin: left bottom;
   transition: all 0.4s ease 0s;
@@ -121,7 +118,7 @@
 
 .card:nth-of-type(even) .name {
   left: inherit;
-  right: 7vmin;
+  right: 9vmin;
   transform: rotate(2deg);
   transform-origin: right bottom;
   background: linear-gradient(-182deg, rgba(255, 255, 255, 0) 60%, #2f313a 0 100%);
@@ -133,37 +130,28 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 59%, #2f313a 0 100%);
 }
 
-/* Bio beside profile - no clear, flows next to thumb */
 .description {
-  padding-top: 0.65em;
-  overflow: hidden;
+  padding-top: 1vmin;
+  /* No clear: both - bio flows beside the thumb */
 }
 
 .descriptionContent {
-  padding: 0 0.5em 0 0;
-  margin: 0 0 0.65em;
-  font-size: 0.85em;
+  padding: 0 2em;
+  margin: 0 0 0.5em;
+  font-size: 0.95em;
   color: #2f313a;
-  line-height: 1.45;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.4;
 }
 
-.card:nth-of-type(even) .descriptionContent {
-  padding: 0 0 0 0.5em;
-}
-
-/* @username / handle - pills with spacing */
+/* @username / handle - dark pill like description p a */
 .handle {
   display: inline-block;
-  margin: 0.4em 0.35em 0 0;
+  margin: 0.5em 0 0 0;
   background: #2f313a;
   color: #ffdd40;
-  padding: 0.12em 0.5em 0.32em;
+  padding: 0.1em 0.5em 0.35em;
   border-radius: 0.5em;
-  font-size: 0.82em;
+  font-size: 0.9em;
   text-decoration: none;
   transition: all 0.4s ease 0s;
 }
@@ -174,25 +162,27 @@
   font-weight: bold;
 }
 
+/* Streak badge - same style as handle */
 .streakBadge {
   display: inline-block;
-  margin: 0.4em 0 0 0.35em;
+  margin: 0.5em 0 0 0.5em;
   background: #2f313a;
   color: #ffdd40;
-  padding: 0.12em 0.5em 0.32em;
+  padding: 0.1em 0.5em 0.35em;
   border-radius: 0.5em;
-  font-size: 0.8em;
+  font-size: 0.85em;
   font-weight: 600;
 }
 
+/* Top rank badge - like CO-FUNDER */
 .topBadge {
-  font-size: 0.68em;
+  font-size: 0.75em;
   position: absolute;
-  top: -1.2em;
+  top: -1.5em;
   background: #ffdd40;
-  right: 3em;
+  right: 4em;
   transform: rotate(3deg);
-  padding: 0.25em 0.5em 0.35em;
+  padding: 0.35em 0.75em 0.5em;
   border-radius: 0.25em;
   color: #2f313a;
   font-weight: bold;
@@ -200,12 +190,12 @@
 
 .card:nth-of-type(even) .topBadge {
   right: inherit;
-  left: 3em;
+  left: 4em;
   transform: rotate(-3deg);
 }
 
 .teamList {
-  padding: 1.5em 0 2em 2em;
+  padding: 2.5em 0 2em 2.5em;
   margin: 0;
   list-style: none;
 }
